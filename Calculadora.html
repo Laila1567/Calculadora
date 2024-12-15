@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calculadora</title>
+
+    <style>
+      /* Estilos gerais para centralizar a calculadora na página */
+      body {
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 130vh;
+        background-color: hsl(306, 91%, 91%);
+      }
+
+      /* Estilos do contêiner principal da calculadora */
+      #calculator {
+        font-family: Arial, sans-serif;
+        background-color: hsl(0, 0%, 100%);
+        border-radius: 15px;
+        max-width: 500px;
+        overflow: hidden;
+      }
+
+      /* Estilo do visor (display) da calculadora */
+      #display {
+        width: 100%;
+        padding: 20px;
+        font-size: 5rem;
+        text-align: left;
+        border: none;
+        background-color: hsl(300, 36%, 69%);
+        color: white;
+      }
+
+      /* Estilos do teclado (área dos botões) */
+      #keys {
+        display: grid;
+        grid-template-columns: repeat(
+          4,
+          1fr
+        ); /* Quatro colunas de largura igual */
+        gap: 10px; /* Espaçamento entre os botões */
+        padding: 25px;
+      }
+
+      /* Estilos gerais para todos os botões */
+      button {
+        width: 100px;
+        height: 100px;
+        border-radius: 50px;
+        border: none;
+        background-color: hsl(286, 46%, 25%);
+        color: white;
+        font-size: 3rem;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      /* Efeito ao passar o mouse sobre os botões */
+      button:hover {
+        background-color: hsl(283, 41%, 48%);
+      }
+
+      /* Efeito ao pressionar os botões */
+      button:active {
+        background-color: hsl(283, 41%, 48%);
+      }
+
+      /* Estilos específicos para botões de operadores */
+      .operator-btn {
+        background-color: hsl(295, 100%, 55%);
+      }
+
+      /* Efeito hover para botões de operadores */
+      .operator-btn:hover {
+        background-color: hsl(298, 93%, 73%);
+      }
+
+      /* Efeito ao pressionar botões de operadores */
+      .operator-btn:active {
+        background-color: hsl(318, 100%, 75%);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="calculator">
+      <!-- Visor da calculadora, somente leitura -->
+      <input id="display" readonly />
+
+      <!-- Teclado da calculadora -->
+      <div id="keys">
+        <!-- Botões numéricos, operadores e funcionalidades -->
+        <button onclick="appendToDisplay('+')" class="operator-btn">+</button>
+        <button onclick="appendToDisplay('7')">7</button>
+        <button onclick="appendToDisplay('8')">8</button>
+        <button onclick="appendToDisplay('9')">9</button>
+        <button onclick="appendToDisplay('-')" class="operator-btn">-</button>
+        <button onclick="appendToDisplay('4')">4</button>
+        <button onclick="appendToDisplay('5')">5</button>
+        <button onclick="appendToDisplay('6')">6</button>
+        <button onclick="appendToDisplay('*')" class="operator-btn">x</button>
+        <button onclick="appendToDisplay('1')">1</button>
+        <button onclick="appendToDisplay('2')">2</button>
+        <button onclick="appendToDisplay('3')">3</button>
+        <button onclick="appendToDisplay('/')" class="operator-btn">÷</button>
+        <button onclick="appendToDisplay('0')">0</button>
+        <button onclick="appendToDisplay('.')">,</button>
+        <button onclick="calculate()">=</button>
+        <button onclick="clearDisplay()" class="operator-btn">C</button>
+        <button onclick="appendToDisplay('(')" class="operator-btn">(</button>
+        <button onclick="appendToDisplay(')')" class="operator-btn">)</button>
+        <button onclick="appendToDisplay('%')" class="operator-btn">%</button>
+      </div>
+    </div>
+
+    <script>
+      // Referência ao visor da calculadora
+      const display = document.getElementById("display");
+
+      // Adiciona caracteres ao visor
+      function appendToDisplay(input) {
+        const lastChar = display.value.slice(-1);
+
+        // Evita inserir operadores consecutivos
+        if (
+          ["+", "-", "*", "/", "%"].includes(input) &&
+          ["+", "-", "*", "/", "%"].includes(lastChar)
+        ) {
+          return;
+        }
+
+        // Adiciona o input ao valor atual do visor
+        display.value += input;
+      }
+
+      // Limpa o visor
+      function clearDisplay() {
+        display.value = "";
+      }
+
+      // Calcula a expressão no visor
+      function calculate() {
+        try {
+          // Substitui "%" por "/100" para tratar como porcentagem
+          const expression = display.value.replace(/(\d+)%/g, "(($1)/100)");
+          display.value = eval(expression); // Calcula a expressão
+        } catch (error) {
+          display.value = "Error"; // Exibe "Erro" caso a expressão seja inválida
+        }
+      }
+    </script>
+  </body>
+</html>
